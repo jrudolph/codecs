@@ -22,7 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.virtualvoid.codec
 
-package net.virtualvoid.codes
+trait Codec[I, O] extends Encoder[I, O] with Decoder[I, O] {
+  def name: String
 
-object Codecs extends ScalaCodecs with StringCodecs with CryptCodecs
+  def <~>[O2](next: Codec[O, O2]): Codec[I, O2] =
+    ConcatenatedCodec(this, next)
+  
+  def reversed: Codec[O, I] =
+    ReversedCodec(this)
+}
+
+case class ConcatenatedCodec[I, O1, O2](first: Codec[I, O1], next: Codec[O1, O2]) extends Codec[I, O2] {
+  val encodeFunc = chain[I, O1, O2](first, next)
+  val decodeFunc = chain[O2, O1, I](next, first)
+  
+  def name = first.name+" <~> "+next.name
+  def encode(i: I): OrError[O2] =
+    encodeFunc(i)
+  def decode(o2: O2): OrError[I] =
+    decodeFunc(o2)
+}
+
+case class ReversedCodec[I, O](codec: Codec[I, O]) extends Codec[O, I] {
+  def name = "Reversed "+codec.name
+  def encode(i: O) = codec.decode(i)
+  def decode(o: I) = codec.encode(o)
+}

@@ -23,23 +23,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.virtualvoid.codes
+package net.virtualvoid.codec
 
-trait Decoder[+I, -O] { self =>
-  def decode(o: O): OrError[I]
-
-  def <~[O2](next: Decoder[O, O2]): Decoder[I, O2] =
-    new Decoder[I, O2] {
-      val func = chain(next, self)
-
-      def decode(o2: O2) = func(o2)
-    }
-}
-
-object Decoder {
-  implicit def decoderIsF1[I, O](decoder: Decoder[I, O]): O => I =
-    o => decoder.decode(o).right.get
-
-  implicit def decoderIsF1WithError[I, O](decoder: Decoder[I, O]): O => OrError[I] =
-    o => decoder.decode(o)
-}
+object Codecs extends ScalaCodecs with StringCodecs with CryptCodecs

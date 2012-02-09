@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.virtualvoid.codes
+package net.virtualvoid.codec
 
 trait Encoder[-I, +O] { self =>
   def encode(i: I): OrError[O]

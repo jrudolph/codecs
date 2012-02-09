@@ -22,31 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.virtualvoid.codes
 
-trait Codec[I, O] extends Encoder[I, O] with Decoder[I, O] {
-  def name: String
+package net.virtualvoid.codec
 
-  def <~>[O2](next: Codec[O, O2]): Codec[I, O2] =
-    ConcatenatedCodec(this, next)
-  
-  def reversed: Codec[O, I] =
-    ReversedCodec(this)
-}
+trait StringCodecs {
+  case class Charset(charset: String) extends CodecBase[String, Bytes] {
+    def name = "Encode with '%s'" format charset
+    def doEncode(string: String) = string.getBytes(charset)
+    def doDecode(bytes: Bytes) = new String(bytes, charset)
+  }
 
-case class ConcatenatedCodec[I, O1, O2](first: Codec[I, O1], next: Codec[O1, O2]) extends Codec[I, O2] {
-  val encodeFunc = chain[I, O1, O2](first, next)
-  val decodeFunc = chain[O2, O1, I](next, first)
-  
-  def name = first.name+" <~> "+next.name
-  def encode(i: I): OrError[O2] =
-    encodeFunc(i)
-  def decode(o2: O2): OrError[I] =
-    decodeFunc(o2)
-}
+  case object Charset7bit extends CodecBase[String, Bytes] {
+    def name = "Reinterpret 7-Bit String to byte array"
+    def doEncode(string: String) = {
+      string.map { char =>
+          assert((char & 0x7f) == char, "Not a 7-bit character: "+char)
+          char.toByte
+        }.toArray
+      }
+    def doDecode(bytes: Bytes) = new String(bytes.map(_.toChar))
+  }
 
-case class ReversedCodec[I, O](codec: Codec[I, O]) extends Codec[O, I] {
-  def name = "Reversed "+codec.name
-  def encode(i: O) = codec.decode(i)
-  def decode(o: I) = codec.encode(o)
+  case object HexString extends CodecBase[Bytes, String] {
+    def name = "Convert bytes to hex string"
+    def doEncode(bytes: Bytes) =
+      bytes.map(_.formatted("%02x")).mkString
+    def doDecode(string: String) =
+      string.grouped(2).map(str => Integer.parseInt(str, 16).toByte).toArray
+  }
 }

@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.virtualvoid.codes
+package net.virtualvoid.codec
 
 import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 import javax.crypto.{Mac, Cipher}

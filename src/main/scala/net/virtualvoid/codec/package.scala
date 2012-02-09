@@ -23,31 +23,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.virtualvoid.codes
+package net.virtualvoid
 
-trait StringCodecs {
-  case class Charset(charset: String) extends CodecBase[String, Bytes] {
-    def name = "Encode with '%s'" format charset
-    def doEncode(string: String) = string.getBytes(charset)
-    def doDecode(bytes: Bytes) = new String(bytes, charset)
-  }
+import util.control.Exception
 
-  case object Charset7bit extends CodecBase[String, Bytes] {
-    def name = "Reinterpret 7-Bit String to byte array"
-    def doEncode(string: String) = {
-      string.map { char =>
-          assert((char & 0x7f) == char, "Not a 7-bit character: "+char)
-          char.toByte
-        }.toArray
-      }
-    def doDecode(bytes: Bytes) = new String(bytes.map(_.toChar))
-  }
+package object codec {
+  type OrError[+T] = Either[Throwable, T]
 
-  case object HexString extends CodecBase[Bytes, String] {
-    def name = "Convert bytes to hex string"
-    def doEncode(bytes: Bytes) =
-      bytes.map(_.formatted("%02x")).mkString
-    def doDecode(string: String) =
-      string.grouped(2).map(str => Integer.parseInt(str, 16).toByte).toArray
-  }
+  type Bytes = Array[Byte]
+
+  def safe[T](body: => T): OrError[T] =
+    Exception.catching(classOf[RuntimeException]).either(body)
+  
+  def chain[I, O1, O2](first: I => OrError[O1], second: O1 => OrError[O2]): I => OrError[O2] = i =>
+    for {
+      o1 <- first(i).right
+      o2 <- second(o1).right
+    }
+      yield o2
 }

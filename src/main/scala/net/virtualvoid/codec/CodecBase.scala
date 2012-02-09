@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.virtualvoid.codes
+package net.virtualvoid.codec
 
 abstract class CodecBase[I, O] extends Codec[I, O] {
   def encode(i: I) = safe(doEncode(i))

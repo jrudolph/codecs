@@ -23,22 +23,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.virtualvoid
+package net.virtualvoid.codec
 
-import util.control.Exception
+trait Decoder[+I, -O] { self =>
+  def decode(o: O): OrError[I]
 
-package object codes {
-  type OrError[+T] = Either[Throwable, T]
+  def <~[O2](next: Decoder[O, O2]): Decoder[I, O2] =
+    new Decoder[I, O2] {
+      val func = chain(next, self)
 
-  type Bytes = Array[Byte]
-
-  def safe[T](body: => T): OrError[T] =
-    Exception.catching(classOf[RuntimeException]).either(body)
-  
-  def chain[I, O1, O2](first: I => OrError[O1], second: O1 => OrError[O2]): I => OrError[O2] = i =>
-    for {
-      o1 <- first(i).right
-      o2 <- second(o1).right
+      def decode(o2: O2) = func(o2)
     }
-      yield o2
+}
+
+object Decoder {
+  implicit def decoderIsF1[I, O](decoder: Decoder[I, O]): O => I =
+    o => decoder.decode(o).right.get
+
+  implicit def decoderIsF1WithError[I, O](decoder: Decoder[I, O]): O => OrError[I] =
+    o => decoder.decode(o)
 }
