@@ -26,13 +26,13 @@
 package net.virtualvoid.codec
 
 trait StringCodecs {
-  case class Charset(charset: String) extends CodecBase[String, Bytes] {
+  case class ApplyCharset(charset: String) extends CodecBase[String, Bytes] {
     def name = "Encode with '%s'" format charset
     def doEncode(string: String) = string.getBytes(charset)
     def doDecode(bytes: Bytes) = new String(bytes, charset)
   }
 
-  case object Charset7bit extends CodecBase[String, Bytes] {
+  case object ApplyCharset7bit extends CodecBase[String, Bytes] {
     def name = "Reinterpret 7-Bit String to byte array"
     def doEncode(string: String) = {
       string.map { char =>
@@ -43,7 +43,7 @@ trait StringCodecs {
     def doDecode(bytes: Bytes) = new String(bytes.map(_.toChar))
   }
 
-  case object HexString extends CodecBase[Bytes, String] {
+  case object ToHexString extends CodecBase[Bytes, String] {
     def name = "Convert bytes to hex string"
     def doEncode(bytes: Bytes) =
       bytes.map(_.formatted("%02x")).mkString
