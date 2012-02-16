@@ -50,3 +50,61 @@ case class ReversedCodec[I, O](codec: Codec[I, O]) extends Codec[O, I] {
   def encode(i: O) = codec.decode(i)
   def decode(o: I) = codec.encode(o)
 }
+
+object Codec {
+  def checkPipeline[A, B, C](pipeline: ConcatenatedCodec[A, B, C])(start: A) {
+    pipeline.first match {
+      case x: ConcatenatedCodec[_, _, _] => checkPipeline(x)(start)
+      case _ =>
+    }
+    val startValue = pipeline.first.encode(start).right.get
+    val endValue = pipeline.next.encode(startValue).right.get
+    val checkValue = pipeline.next.decode(endValue).right.get
+
+    def isEqual(i1: Any, i2: Any): Boolean = (i1, i2) match {
+      case (a: Array[Byte], b: Array[Byte]) => a.toSeq == b.toSeq
+      case ((a1, a2), (b1, b2)) => isEqual(a1, b1) && isEqual(a2, b2)
+      case _ => i1 == i2
+    }
+
+    if (isEqual(startValue, checkValue))
+      println("Stage '%s' working correctly" format  pipeline.next.name)
+    else
+      println("Stage '%s' of pipeline broken: '%s' != '%s'" format (pipeline.next.name, startValue, checkValue))
+  }
+
+  def noisyEncode[I, O](codec: Codec[I, O])(start: I): (O, Seq[(Codec[_, _], String)]) = codec match {
+    case ConcatenatedCodec(first, second) =>
+      val (end1, msgs1) = noisyEncode(first)(start)
+      val (end2, msgs2) = noisyEncode(second)(end1)
+
+      (end2, msgs1 ++ msgs2)
+    case ReversedCodec(inner) =>
+      noisyDecode(inner)(start)
+    case _ =>
+      val value = codec.encode(start).right.get
+      (value, Seq((codec, print(value))))
+  }
+  // TODO: this shares almost all code with noisyEncode, but because of
+  //       ReversedCodec we've to supply it right now. Check how to unify
+  def noisyDecode[I, O](codec: Codec[I, O])(start: O): (I, Seq[(Codec[_, _], String)]) = codec match {
+    case ConcatenatedCodec(first, second) =>
+      val (end2, msgs2) = noisyDecode(second)(start)
+      val (end1, msgs1) = noisyDecode(first)(end2)
+
+      (end1, msgs2 ++ msgs1)
+    case ReversedCodec(inner) =>
+      noisyEncode(inner)(start)
+    case _ =>
+      val value = codec.decode(start).right.get
+      (value, Seq((codec, print(value))))
+  }
+
+  def print(value: Any): String = value match {
+    case a: Bytes => "%d Bytes: [%s]" format (a.size, a.map(_ formatted "%02X").mkString(" "))
+    case a: Array[_] => a.toSeq.toString
+    case (a, b) => (print(a), print(b)).toString
+    case s: String => "\"%s\"" format s
+    case _ => value.toString
+  }
+}
