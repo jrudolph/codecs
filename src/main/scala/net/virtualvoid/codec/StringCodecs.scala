@@ -50,4 +50,14 @@ trait StringCodecs {
     def doDecode(string: String) =
       string.grouped(2).map(str => Integer.parseInt(str, 16).toByte).toArray
   }
+
+  case object ApplyBase64 extends CodecBase[Bytes, Bytes] {
+    def name = "Base64"
+
+    def doEncode(bytes: Bytes) =
+      org.apache.commons.codec.binary.Base64.encodeBase64(bytes)
+
+    def doDecode(bytes: Bytes) =
+      org.apache.commons.codec.binary.Base64.decodeBase64(bytes)
+  }
 }
