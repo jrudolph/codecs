@@ -27,19 +27,24 @@ package net.virtualvoid.codec
 
 trait ScalaCodecs {
 
-  case class OnFirst[I1, I2, O1](inner: Codec[I1, O1]) extends CodecBase[(I1, I2), (O1, I2)] {
-    def name = inner.name+" on first item of tuple"
-    def doEncode(tuple: (I1, I2)) =
-      (inner.encode(tuple._1).right.get, tuple._2)
-    def doDecode(tuple: (O1, I2)) =
-      (inner.decode(tuple._1).right.get, tuple._2)
+  case class OnFirst[I1, I2, O1](inner: Codec[I1, O1]) extends Codec[(I1, I2), (O1, I2)] {
+    def name = "On first item of tuple do '%s'" format inner.name
+    def encode(tuple: (I1, I2)) =
+      for (o1 <- inner.encode(tuple._1).right)
+        yield (o1, tuple._2)
+
+    def decode(tuple: (O1, I2)) =
+      for (i1 <- inner.decode(tuple._1).right)
+        yield (i1, tuple._2)
   }
-  case class OnSecond[I1, I2, O2](inner: Codec[I2, O2]) extends CodecBase[(I1, I2), (I1, O2)] {
-    def name = inner.name+" on first item of tuple"
-    def doEncode(tuple: (I1, I2)) =
-      (tuple._1, inner.encode(tuple._2).right.get)
-    def doDecode(tuple: (I1, O2)) =
-      (tuple._1, inner.decode(tuple._2).right.get)
+  case class OnSecond[I1, I2, O2](inner: Codec[I2, O2]) extends Codec[(I1, I2), (I1, O2)] {
+    def name = "On second item of tuple do '%s'" format inner.name
+    def encode(tuple: (I1, I2)) =
+      for (o2 <- inner.encode(tuple._2).right)
+        yield (tuple._1, o2)
+    def decode(tuple: (I1, O2)) =
+      for (i2 <- inner.decode(tuple._2).right)
+        yield (tuple._1, i2)
   }
   case class ReverseTuple[T1, T2]() extends CodecBase[(T1, T2), (T2, T1)] {
     def name = "Reverse tuple"
