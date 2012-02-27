@@ -2,8 +2,8 @@
 {
  "organization":"net.virtual-void",
  "name":"codecs",
- "version":"0.4.0-SNAPSHOT",
- "description":"codecs",
+ "version":"0.4.0",
+ "description":"Codecs is a library of bidirectional encoding/decoding primitives which can easily be composed into a processing pipeline",
  "site":"http://github.com/jrudolph/codecs",
  "tags":["codec","encode","decode","encrypt","sign"],
  "docs":"http://github.com/jrudolph/codecs",
