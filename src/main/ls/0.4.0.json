@@ -1,0 +1,22 @@
+
+{
+ "organization":"net.virtual-void",
+ "name":"codecs",
+ "version":"0.4.0-SNAPSHOT",
+ "description":"codecs",
+ "site":"http://github.com/jrudolph/codecs",
+ "tags":["codec","encode","decode","encrypt","sign"],
+ "docs":"http://github.com/jrudolph/codecs",
+ "licenses": [{
+   "name": "BSD 2-Clause License",
+   "url": "http://www.opensource.org/licenses/BSD-2-Clause"
+  }],
+ "resolvers": ["http://scala-tools.org/repo-releases"],
+ "dependencies": [{
+   "organization":"commons-codec",
+   "name": "commons-codec",
+   "version": "1.5+"
+  }],
+ "scalas": ["2.9.1"],
+ "sbt": false
+}

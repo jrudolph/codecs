@@ -1,0 +1,5 @@
+This is the first release of [codecs][], a library of bidirectional encoding/decoding primitives which can
+easily be composed into a processing pipeline. It comes with predefined primitives for signing, encryption,
+string manipulation and support for Scala data structures.
+
+  [codecs]: https://github.com/jrudolph/codecs
