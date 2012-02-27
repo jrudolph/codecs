@@ -18,3 +18,5 @@ pomExtra :=
                            "jrudolph", "Johannes Rudolph")
 
 useGpg := true
+
+publish <<= publish dependsOn (test in Test)
