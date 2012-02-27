@@ -57,7 +57,7 @@ value. To recover the original message we can now use this code:
 ::
 
   val original = cookiePipeline.decode("p8JfiVsTRYtkMOb6yfY3ekatMKN0ZXN0ZGF0YQ==")
-  println(original.right.toOption.getOrElse("Decoding/Validation failed"))
+  assert(original.right.toOption.getOrElse("Decoding/Validation failed") == "testdata")
 
 Usage
 -----
@@ -66,7 +66,7 @@ Use
 
 ::
 
-  libraryDependency += "net.virtual-void" %% "codecs" % "0.4.0"
+  libraryDependencies += "net.virtual-void" %% "codecs" % "0.4.0"
 
 in your sbt build definition.
 
