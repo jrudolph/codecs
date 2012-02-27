@@ -66,7 +66,8 @@ trait CryptCodecs {
       val mac = Mac.getInstance(macName)
       mac.init(key)
       val check = mac.doFinal(msg)
-      assert(constantTimeIsEqual(check, signature), "Validation failed. Signature '%s' wasn't equal to '%s'" format (check.toSeq, signature.toSeq))
+      if (!constantTimeIsEqual(check, signature))
+        throw new RuntimeException("Validation failed. Signature '%s' wasn't equal to '%s'" format (check.toSeq, signature.toSeq))
 
       msg
     }
