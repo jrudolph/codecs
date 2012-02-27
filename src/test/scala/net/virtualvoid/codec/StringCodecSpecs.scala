@@ -42,7 +42,7 @@ class StringCodecSpecs extends Specification with CodecSpecs {
     }
 
     "ApplyCharset7Bit" in {
-      val codec = Codecs.ApplyCharset7bit
+      val codec = Codecs.ApplyCharset7Bit
       
       val arbitrary7bitString: Arbitrary[String] =
         Arbitrary(Gen.containerOf[Array,Byte](Gen.chooseNum(0, 127)).map(new String(_)))

@@ -32,7 +32,7 @@ trait StringCodecs {
     def doDecode(bytes: Bytes) = new String(bytes, charset)
   }
 
-  case object ApplyCharset7bit extends ReversibleCodecBase[String, Bytes] {
+  case object ApplyCharset7Bit extends ReversibleCodecBase[String, Bytes] {
     def name = "Reinterpret 7-Bit String to byte array"
     def doEncode(string: String) = {
       string.map { char =>
