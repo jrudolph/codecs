@@ -29,10 +29,13 @@ trait Codec[I, O] extends Encoder[I, O] with Decoder[I, O] {
 
   def <~>[O2](next: Codec[O, O2]): Codec[I, O2] =
     ConcatenatedCodec(this, next)
-  
+}
+
+trait Reversible[I, O] { self: Codec[I, O] =>
   def reversed: Codec[O, I] =
     ReversedCodec(this)
 }
+trait ReversibleCodec[I, O] extends Codec[I, O] with Reversible[I, O]
 
 case class ConcatenatedCodec[I, O1, O2](first: Codec[I, O1], next: Codec[O1, O2]) extends Codec[I, O2] {
   val encodeFunc = chain[I, O1, O2](first, next)

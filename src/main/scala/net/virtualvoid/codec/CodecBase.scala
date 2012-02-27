@@ -32,3 +32,5 @@ abstract class CodecBase[I, O] extends Codec[I, O] {
   def doEncode(i: I): O
   def doDecode(o: O): I
 }
+
+abstract class ReversibleCodecBase[I, O] extends CodecBase[I, O] with Reversible[I, O]

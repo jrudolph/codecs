@@ -46,7 +46,7 @@ trait ScalaCodecs {
       for (i2 <- inner.decode(tuple._2).right)
         yield (tuple._1, i2)
   }
-  case class ReverseTuple[T1, T2]() extends CodecBase[(T1, T2), (T2, T1)] {
+  case class ReverseTuple[T1, T2]() extends ReversibleCodecBase[(T1, T2), (T2, T1)] {
     def name = "Reverse tuple"
 
     def doEncode(i: (T1, T2)) =
@@ -56,7 +56,7 @@ trait ScalaCodecs {
       (o._2, o._1)
   }
 
-  case class Join[T: ClassManifest](firstBlockSize: Int) extends CodecBase[(Array[T], Array[T]), Array[T]] {
+  case class Join[T: ClassManifest](firstBlockSize: Int) extends ReversibleCodecBase[(Array[T], Array[T]), Array[T]] {
     def name = "Join two arrays"
     def doEncode(tuple: (Array[T], Array[T])) = {
       val (ar1, ar2) = tuple
