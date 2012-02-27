@@ -25,27 +25,45 @@
 
 package net.virtualvoid.codec
 
+/**
+ * A collection of codecs concerning Scala data structures.
+ */
 trait ScalaCodecs {
 
-  case class OnFirst[I1, I2, O1](inner: Codec[I1, O1]) extends Codec[(I1, I2), (O1, I2)] {
-    def name = "On first item of tuple do '%s'" format inner.name
+  /**
+   * Apply a codec only on the first element of a `Tuple2`.
+   *
+   * @param codec The codec to apply to the first element of the tuple.
+   */
+  case class OnFirst[I1, I2, O1](codec: Codec[I1, O1]) extends Codec[(I1, I2), (O1, I2)] {
+    def name = "On first item of tuple do '%s'" format codec.name
     def encode(tuple: (I1, I2)) =
-      for (o1 <- inner.encode(tuple._1).right)
+      for (o1 <- codec.encode(tuple._1).right)
         yield (o1, tuple._2)
 
     def decode(tuple: (O1, I2)) =
-      for (i1 <- inner.decode(tuple._1).right)
+      for (i1 <- codec.decode(tuple._1).right)
         yield (i1, tuple._2)
   }
-  case class OnSecond[I1, I2, O2](inner: Codec[I2, O2]) extends Codec[(I1, I2), (I1, O2)] {
-    def name = "On second item of tuple do '%s'" format inner.name
+
+  /**
+   * Apply a codec only on the second element of a `Tuple2`.
+   *
+   * @param codec The codec to apply to the second element of the tuple.
+   */
+  case class OnSecond[I1, I2, O2](codec: Codec[I2, O2]) extends Codec[(I1, I2), (I1, O2)] {
+    def name = "On second item of tuple do '%s'" format codec.name
     def encode(tuple: (I1, I2)) =
-      for (o2 <- inner.encode(tuple._2).right)
+      for (o2 <- codec.encode(tuple._2).right)
         yield (tuple._1, o2)
     def decode(tuple: (I1, O2)) =
-      for (i2 <- inner.decode(tuple._2).right)
+      for (i2 <- codec.decode(tuple._2).right)
         yield (tuple._1, i2)
   }
+
+  /**
+   * A codec which swaps the elements of a `Tuple2`.
+   */
   case class ReverseTuple[T1, T2]() extends ReversibleCodecBase[(T1, T2), (T2, T1)] {
     def name = "Reverse tuple"
 
@@ -56,6 +74,12 @@ trait ScalaCodecs {
       (o._2, o._1)
   }
 
+  /**
+   * A codec which joins two arrays of elements of the same type by concatenation. To be able
+   * to decode the resulting concatenated array the first element must have a constant size in
+   * all cases.
+   * @param firstBlockSize The size of the first data array
+   */
   case class Join[T: ClassManifest](firstBlockSize: Int) extends ReversibleCodecBase[(Array[T], Array[T]), Array[T]] {
     def name = "Join two arrays"
     def doEncode(tuple: (Array[T], Array[T])) = {

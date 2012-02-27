@@ -25,13 +25,25 @@
 
 package net.virtualvoid.codec
 
+/**
+ * A collection of codecs concerning Strings.
+ */
 trait StringCodecs {
+
+  /**
+   * Encodes a string with a given charset.
+   * @param charset
+   */
   case class ApplyCharset(charset: String) extends ReversibleCodecBase[String, Bytes] {
     def name = "Encode with '%s'" format charset
     def doEncode(string: String) = string.getBytes(charset)
     def doDecode(bytes: Bytes) = new String(bytes, charset)
   }
 
+  /**
+   * Reinterprets a string of characters only in the 7-bit range [0, 127] into
+   * an array of bytes.
+   */
   case object ApplyCharset7Bit extends ReversibleCodecBase[String, Bytes] {
     def name = "Reinterpret 7-Bit String to byte array"
     def doEncode(string: String) = {
@@ -43,6 +55,11 @@ trait StringCodecs {
     def doDecode(bytes: Bytes) = new String(bytes.map(_.toChar))
   }
 
+  /**
+   * Encodes an array of bytes into a string of double length where every two
+   * characters of the result are the lower-case hexadecimal representation
+   * of one byte of the array.
+   */
   case object ToHexString extends ReversibleCodecBase[Bytes, String] {
     def name = "Convert bytes to hex string"
     def doEncode(bytes: Bytes) =
@@ -51,6 +68,15 @@ trait StringCodecs {
       string.grouped(2).map(str => Integer.parseInt(str, 16).toByte).toArray
   }
 
+  /**
+   * Apply a base64 encoding on the input data. The result is an array of
+   * bytes of characters in the 7-bit range. If you need a String output you
+   * can combine this codec with `ApplyCharset7Bit` like this:
+   *
+   * {{{
+   *     val ToBase64String = ApplyBase64 <~> ApplyCharset7Bit
+   * }}}
+   */
   case object ApplyBase64 extends ReversibleCodecBase[Bytes, Bytes] {
     def name = "Base64"
 

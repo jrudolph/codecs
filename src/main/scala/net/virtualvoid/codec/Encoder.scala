@@ -25,7 +25,23 @@
 
 package net.virtualvoid.codec
 
+/**
+ * An encoder is a "function" from `I` to `O`. It may be not a function in the mathematical
+ * sense in that it may return different values for the same input. For example, an encryption
+ * function may use a different random factor for each call of encode.
+ *
+ * @tparam I
+ * @tparam O
+ */
 trait Encoder[-I, +O] { self =>
+  /**
+   * The encoding function. Returns either `Right(code)` if encoding is possible
+   * for the input value with `code` being the encoded value or `Left(exception)` if
+   * the input value can't be encoded.
+   *
+   * @param i
+   * @return
+   */
   def encode(i: I): OrError[O]
 
   def ~>[O2](next: Encoder[O, O2]): Encoder[I, O2] =

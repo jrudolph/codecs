@@ -25,4 +25,7 @@
 
 package net.virtualvoid.codec
 
+/**
+ * The full collection of codecs supplied by this library.
+ */
 object Codecs extends ScalaCodecs with StringCodecs with CryptCodecs

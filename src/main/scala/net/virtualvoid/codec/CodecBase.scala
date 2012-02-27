@@ -25,6 +25,10 @@
 
 package net.virtualvoid.codec
 
+/**
+ * A base class for the implementation of codecs where the implementation
+ * reports a coding error by throwing an exception.
+ */
 abstract class CodecBase[I, O] extends Codec[I, O] {
   def encode(i: I) = safe(doEncode(i))
   def decode(o: O) = safe(doDecode(o))

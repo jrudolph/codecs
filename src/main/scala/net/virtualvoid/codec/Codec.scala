@@ -24,6 +24,21 @@
  */
 package net.virtualvoid.codec
 
+/**
+ * A codec is the combination of an encoder and a decoder function which together form a
+ * reversible "function". Codecs can be concatenated using the `<~>` combinator. Encoding doesn't
+ * have to be referentially transparent, e.g. an encryption codec may use a random factor in the
+ * encoding step so that the result of each encoding run may be different. However, there's one
+ * important invariant which is the base of the codec idea. A codec must always be able to produce
+ * the same input by encoding and then decoding a piece of data. I.e. for each supported input
+ * i: `decode(encode(i)) == i`.
+ *
+ * The encoding function doesn't have to support all input values of the specified Scala type. See
+ * the documentation of `Encoder.encode`.
+ *
+ * @tparam I The input type
+ * @tparam O The output type
+ */
 trait Codec[I, O] extends Encoder[I, O] with Decoder[I, O] {
   def name: String
 

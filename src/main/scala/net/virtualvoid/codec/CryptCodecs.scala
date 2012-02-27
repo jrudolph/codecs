@@ -28,7 +28,19 @@ package net.virtualvoid.codec
 import javax.crypto.spec.{IvParameterSpec, SecretKeySpec}
 import javax.crypto.{Mac, Cipher}
 
+/**
+ * A collection of encryption related codecs.
+ */
 trait CryptCodecs {
+
+  /**
+   * Encrypts an array of bytes using a `javax.crypto.Cipher` with the specified key. The
+   * result is a tuple `(<initialization-vector>, <encrypted-data>)`. The initialization vector
+   * is generated randomly so encoding results in different output each time it is called.
+   *
+   * @param cipherName The name of a `javax.crypto.Cipher`
+   * @param key The secret key for this cipher
+   */
   case class EncryptCBC(cipherName: String, key: SecretKeySpec) extends CodecBase[Bytes, (Bytes, Bytes)] {
     def name = "Encrypt with "+cipherName
 
@@ -51,6 +63,13 @@ trait CryptCodecs {
     }
   }
 
+  /**
+   * Signs an byte array of data using a `javax.crypto.Mac` and a corresponding secret key. The
+   * result is a tuple `(<signature>, <input>)`.
+   *
+   * @param macName The mac algorithm to use.
+   * @param key A secret key for the mac algorithm.
+   */
   case class Sign(macName: String, key: SecretKeySpec) extends CodecBase[Bytes, (Bytes, Bytes)] {
     def name = "Sign with "+macName
     def doEncode(msg: Bytes) = {

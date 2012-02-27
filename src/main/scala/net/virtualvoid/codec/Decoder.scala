@@ -25,6 +25,14 @@
 
 package net.virtualvoid.codec
 
+/**
+ * Represents a decoding function. In contrast to an encoding function a decoding
+ * function must be referentially transparent to establish the codec invariant that
+ * a round-trip through a codec always reproduces the original input value.
+ *
+ * @tparam I
+ * @tparam O
+ */
 trait Decoder[+I, -O] { self =>
   def decode(o: O): OrError[I]
 
