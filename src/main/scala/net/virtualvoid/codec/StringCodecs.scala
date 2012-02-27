@@ -76,6 +76,14 @@ trait StringCodecs {
    * {{{
    *     val ToBase64String = ApplyBase64 <~> ApplyCharset7Bit
    * }}}
+   *
+   * This relies on apache commons-codec, so you have to include that into
+   * your build. In sbt you can use this line in your build definition to make it
+   * available:
+   *
+   * {{{
+   *   libraryDependencies += "commons-codec" % "commons-codec" % "1.5+"
+   * }}}
    */
   case object ApplyBase64 extends ReversibleCodecBase[Bytes, Bytes] {
     def name = "Base64"
