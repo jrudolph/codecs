@@ -83,8 +83,13 @@ trait CryptCodecs {
       val (signature, msg) = info
 
       val mac = Mac.getInstance(macName)
+
+      if (signature.size != mac.getMacLength)
+        throw new RuntimeException("Signature has wrong size. Expected: %d was %d" format(mac.getMacLength, signature.size))
+
       mac.init(key)
       val check = mac.doFinal(msg)
+
       if (!constantTimeIsEqual(check, signature))
         throw new RuntimeException("Validation failed. Signature '%s' wasn't equal to '%s'" format (check.toSeq, signature.toSeq))
 
