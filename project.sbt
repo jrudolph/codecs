@@ -1,6 +1,6 @@
 organization := "net.virtual-void"
 
-name := "codec"
+name := "codecs"
 
 version := "0.4.0-SNAPSHOT"
 
