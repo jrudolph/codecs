@@ -1,0 +1,291 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>net.virtualvoid.codec</title>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link type="text/css" media="screen" rel="stylesheet" href="../../../lib/template.css" />
+      <script type="text/javascript" src="../../../lib/jquery.js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img src="../../../lib/package_big.png" />
+        <p id="owner"><a name="net" class="extype" href="../../package.html">net</a>.<a name="net.virtualvoid" class="extype" href="../package.html">virtualvoid</a></p>
+        <h1>codec</h1>
+      </div>
+
+      <h4 class="signature" id="signature">
+      <span class="kind">package</span>
+      <span class="symbol"> 
+        <span class="name">codec</span>
+        
+        
+      </span>
+      </h4>
+      
+          <div class="fullcommenttop" id="comment"></div>
+        
+
+      <div id="template">
+
+        <div id="mbrsel">
+          <div id="textfilter"><span class="pre"></span><span class="input"><input accesskey="/" type="text" /></span><span class="post"></span></div>
+          
+          
+          <div id="visbl">
+              <span class="filtertype">Visibility</span>
+              <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+            </div>
+        </div>
+
+        
+
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="net.virtualvoid.codec.package#Bytes" data-isabs="false">
+      <a id="Bytes:Bytes"></a>
+      <h4 class="signature">
+      <span class="kind">type</span>
+      <span class="symbol"> 
+        <span class="name">Bytes</span>
+        
+        <span class="result"> = <span name="scala.Array" class="extype">Array</span>[<span name="scala.Byte" class="extype">Byte</span>]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="net.virtualvoid.codec.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="net.virtualvoid.codec.Codec" data-isabs="true">
+      <a id="Codec:Codec[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Codec.html"><span class="name">Codec</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span>
+        <span class="result"> extends Encoder[I, O] with Decoder[I, O]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A codec is the combination of an encoder and a decoder function which together form a
+reversible &quot;function&quot;.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.CodecBase" data-isabs="true">
+      <a id="CodecBase:CodecBase[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="CodecBase.html"><span class="name">CodecBase</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span>
+        <span class="result"> extends Codec[I, O]</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A base class for the implementation of codecs where the implementation
+reports a coding error by throwing an exception.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.ConcatenatedCodec" data-isabs="false">
+      <a id="ConcatenatedCodec:ConcatenatedCodec[I, O1, O2]"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ConcatenatedCodec.html"><span class="name">ConcatenatedCodec</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O1">O1</span>, <span name="O2">O2</span>]</span>
+        <span class="params">(<span name="first">first: Codec[I, O1]</span>, <span name="next">next: Codec[O1, O2]</span>)</span><span class="result"> extends Codec[I, O2] with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.CryptCodecs" data-isabs="true">
+      <a id="CryptCodecs:CryptCodecs"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="CryptCodecs.html"><span class="name">CryptCodecs</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A collection of encryption related codecs.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.Decoder" data-isabs="true">
+      <a id="Decoder:Decoder[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Decoder.html"><span class="name">Decoder</span></a>
+        <span class="tparams">[<span name="I">+I</span>, <span name="O">-O</span>]</span>
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Represents a decoding function.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.Encoder" data-isabs="true">
+      <a id="Encoder:Encoder[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Encoder.html"><span class="name">Encoder</span></a>
+        <span class="tparams">[<span name="I">-I</span>, <span name="O">+O</span>]</span>
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">An encoder is a &quot;function&quot; from <code>I</code> to <code>O</code>.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.package#OrError" data-isabs="false">
+      <a id="OrError:OrError[T]"></a>
+      <h4 class="signature">
+      <span class="kind">type</span>
+      <span class="symbol"> 
+        <span class="name">OrError</span>
+        <span class="tparams">[<span name="T">+T</span>]</span>
+        <span class="result"> = <span name="scala.Either" class="extype">Either</span>[Throwable, T]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="net.virtualvoid.codec.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="net.virtualvoid.codec.ReversedCodec" data-isabs="false">
+      <a id="ReversedCodec:ReversedCodec[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">case class</span>
+      <span class="symbol"> 
+        <a href="ReversedCodec.html"><span class="name">ReversedCodec</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span>
+        <span class="params">(<span name="codec">codec: Codec[I, O]</span>)</span><span class="result"> extends Codec[O, I] with Product with Serializable</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.Reversible" data-isabs="true">
+      <a id="Reversible:Reversible[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="Reversible.html"><span class="name">Reversible</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span>
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.ReversibleCodec" data-isabs="true">
+      <a id="ReversibleCodec:ReversibleCodec[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="ReversibleCodec.html"><span class="name">ReversibleCodec</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span>
+        <span class="result"> extends Codec[I, O] with Reversible[I, O]</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.ReversibleCodecBase" data-isabs="true">
+      <a id="ReversibleCodecBase:ReversibleCodecBase[I, O]"></a>
+      <h4 class="signature">
+      <span class="kind">class</span>
+      <span class="symbol"> 
+        <a href="ReversibleCodecBase.html"><span class="name">ReversibleCodecBase</span></a>
+        <span class="tparams">[<span name="I">I</span>, <span name="O">O</span>]</span>
+        <span class="result"> extends CodecBase[I, O] with Reversible[I, O]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>abstract </dd></dl></div>
+    </li><li visbl="pub" name="net.virtualvoid.codec.ScalaCodecs" data-isabs="true">
+      <a id="ScalaCodecs:ScalaCodecs"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="ScalaCodecs.html"><span class="name">ScalaCodecs</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A collection of codecs concerning Scala data structures.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.StringCodecs" data-isabs="true">
+      <a id="StringCodecs:StringCodecs"></a>
+      <h4 class="signature">
+      <span class="kind">trait</span>
+      <span class="symbol"> 
+        <a href="StringCodecs.html"><span class="name">StringCodecs</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">A collection of codecs concerning Strings.</p>
+    </li></ol>
+            </div>
+        
+        
+
+        <div class="values members" id="values">
+              <h3>Value Members</h3>
+              <ol><li visbl="pub" name="net.virtualvoid.codec.Codec" data-isabs="false">
+      <a id="Codec:Codec"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Codec$.html"><span class="name">Codec</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.Codecs" data-isabs="false">
+      <a id="Codecs:Codecs"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Codecs$.html"><span class="name">Codecs</span></a>
+        
+        <span class="result"> extends ScalaCodecs with StringCodecs with CryptCodecs</span>
+      </span>
+      </h4>
+      <p class="comment cmt">The full collection of codecs supplied by this library.</p>
+    </li><li visbl="pub" name="net.virtualvoid.codec.Decoder" data-isabs="false">
+      <a id="Decoder:Decoder"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Decoder$.html"><span class="name">Decoder</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.Encoder" data-isabs="false">
+      <a id="Encoder:Encoder"></a>
+      <h4 class="signature">
+      <span class="kind">object</span>
+      <span class="symbol"> 
+        <a href="Encoder$.html"><span class="name">Encoder</span></a>
+        
+        <span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      
+    </li><li visbl="pub" name="net.virtualvoid.codec.package#chain" data-isabs="false">
+      <a id="chain[I, O1, O2]((I) ⇒ OrError[O1],(O1) ⇒ OrError[O2]):(I) ⇒ OrError[O2]"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol"> 
+        <span class="name">chain</span>
+        <span class="tparams">[<span name="I">I</span>, <span name="O1">O1</span>, <span name="O2">O2</span>]</span>
+        <span class="params">(<span name="first">first: (I) ⇒ OrError[O1]</span>, <span name="second">second: (O1) ⇒ OrError[O2]</span>)</span><span class="result">: (I) ⇒ OrError[O2]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="net.virtualvoid.codec.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li><li visbl="pub" name="net.virtualvoid.codec.package#safe" data-isabs="false">
+      <a id="safe[T](⇒ T):OrError[T]"></a>
+      <h4 class="signature">
+      <span class="kind">def</span>
+      <span class="symbol"> 
+        <span class="name">safe</span>
+        <span class="tparams">[<span name="T">T</span>]</span>
+        <span class="params">(<span name="body">body: ⇒ T</span>)</span><span class="result">: OrError[T]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a name="net.virtualvoid.codec.package" class="extype" href="package$.html">package</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+
+      </div>
+      
+      <div id="tooltip"></div>
+      
+    </body>
+      </html>
