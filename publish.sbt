@@ -13,8 +13,8 @@ pomIncludeRepository := { _ => false }
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 pomExtra :=
-  Helpers.generatePomExtra("git@github.com:jrudolph/codec.git",
-                           "scm:git:git@github.com:jrudolph/codec.git",
+  Helpers.generatePomExtra("git@github.com:jrudolph/codecs.git",
+                           "scm:git:git@github.com:jrudolph/codecs.git",
                            "jrudolph", "Johannes Rudolph")
 
 useGpg := true

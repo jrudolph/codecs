@@ -87,6 +87,6 @@ License
 
 Licensed under the 2-clause BSD license.
 
-.. _ScalaDocs: http://jrudolph.github.com/scala-codecs/api/index.html
+.. _ScalaDocs: http://jrudolph.github.com/codecs/api/index.html
 .. _mail: mailto:johannes.rudolph@gmail.com
-.. _tracker: https://github.com/jrudolph/codec/issues
+.. _tracker: https://github.com/jrudolph/codecs/issues
