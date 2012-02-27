@@ -2,7 +2,7 @@ organization := "net.virtual-void"
 
 name := "codecs"
 
-version := "0.4.0-SNAPSHOT"
+version := "0.4.0"
 
 homepage := Some(url("http://github.com/jrudolph/codecs"))
 
