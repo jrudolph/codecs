@@ -33,7 +33,7 @@ package object codec {
   type Bytes = Array[Byte]
 
   def safe[T](body: => T): OrError[T] =
-    Exception.catching(classOf[RuntimeException]).either(body)
+    Exception.catching(classOf[Exception]).either(body)
   
   def chain[I, O1, O2](first: I => OrError[O1], second: O1 => OrError[O2]): I => OrError[O2] = i =>
     for {
