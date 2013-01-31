@@ -46,7 +46,7 @@ class CryptCodecSpecs extends Specification with CodecSpecs {
           def name = "Produce a transmission error"
           def doEncode(i: (Array[Byte], Array[Byte])) = {
             val x = i._2.toSeq.toArray
-            x(5) = 42
+            x(5) = (x(5) + 1).toByte
             (i._1, x)
           }
           def doDecode(o: (Array[Byte], Array[Byte])) = o
